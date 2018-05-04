@@ -14,9 +14,9 @@ IP_ADDRESS=$(ip -o -4 addr list $(ip -o -4 route show to default | awk '{print $
 
 echo "Start kubelet"
 mkdir -p /etc/kubernetes/ssl/
-if [ -d /etc/ssl/private/edgescale/certs ];then
-	cp /etc/ssl/private/edgescale/certs/edgescale.pem /etc/kubernetes/ssl/kubelet-client.crt
-	cp /etc/ssl/private/edgescale/private_keys/edgescale.key /etc/kubernetes/ssl/kubelet-client.key
+if [ -d /data/certs ];then
+	cp /data/certs/edgescale.pem /etc/kubernetes/ssl/kubelet-client.crt
+	cp /data/private_keys/edgescale.key /etc/kubernetes/ssl/kubelet-client.key
 
 else
 	echo "Error cert file is not found";exit -1
@@ -30,5 +30,5 @@ docker pull $podpause >/dev/null 2>&1 &
 
 killall  kubelet >/dev/null 2>&1;mkdir -p /var/lib/kubelet/;mkdir -p /etc/kubernetes/ssl
 
-/usr/local/bin/kubelet --pod-infra-container-image=$podpause --kubeconfig=/etc/kubernetes/kubelet.kubeconfig --require-kubeconfig --cert-dir=/etc/kubernetes/ssl --node-ip=$IP_ADDRESS --cluster-dns=10.96.0.2   --cluster-domain=cluster.local. --allow-privileged=true --logtostderr=true  --v=2 > /var/log/kubelet.log 2>&1 &
+/usr/local/bin/kubelet --pod-infra-container-image=$podpause --image-gc-high-threshold=99 --image-gc-low-threshold=95 --image-pull-progress-deadline=10m --kubeconfig=/etc/kubernetes/kubelet.kubeconfig --require-kubeconfig --cert-dir=/etc/kubernetes/ssl --node-ip=$IP_ADDRESS --cluster-dns=10.96.0.2   --cluster-domain=cluster.local. --allow-privileged=true --logtostderr=true  --v=2 > /var/log/kubelet.log 2>&1 &
 
