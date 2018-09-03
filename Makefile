@@ -44,6 +44,7 @@ install:
 
 	sudo cp -r $(GOPATH)/images/kubelet $(INSTALL_DIR)/usr/local/bin
 	sudo cp -r scripts/* $(INSTALL_DIR)/usr/local/bin/
+	sudo sed -i s/pause-arm64/pause-$(ARCH)/g $(INSTALL_DIR)/usr/local/bin/k8s.sh
 
 goenv:
 	if [ ! -f $(GOROOT)/bin/go ]; then  \
