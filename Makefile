@@ -39,12 +39,14 @@ clean:
 	$(MAKE) clean
 
 install:
-	sudo $(INSTALL) -d --mode 755 $(INSTALL_DIR)/usr/local/bin
+	sudo $(INSTALL) -d --mode 755 $(INSTALL_DIR)/usr/local/edgescale/bin
+	sudo $(INSTALL) -d --mode 755 $(INSTALL_DIR)/usr/local/edgescale/conf
+	sudo $(INSTALL) -d --mode 755 $(INSTALL_DIR)/usr/local/edgescale/doc
+	sudo $(INSTALL) -d --mode 755 $(INSTALL_DIR)/usr/local/edgescale/log
 	sudo $(INSTALL) -d --mode 755 $(INSTALL_DIR)/etc/
-
-	sudo cp -r $(GOPATH)/images/kubelet $(INSTALL_DIR)/usr/local/bin
-	sudo cp -r scripts/* $(INSTALL_DIR)/usr/local/bin/
-	sudo sed -i s/pause-arm64/pause-$(ARCH)/g $(INSTALL_DIR)/usr/local/bin/k8s.sh
+	sudo cp -r $(GOPATH)/images/kubelet $(INSTALL_DIR)/usr/local/edgescale/bin
+	sudo cp -r scripts/* $(INSTALL_DIR)/usr/local/edgescale/bin/
+	sudo sed -i s/pause-arm64/pause-$(ARCH)/g $(INSTALL_DIR)/usr/local/edgescale/bin/k8s.sh
 
 goenv:
 	if [ ! -f $(GOROOT)/bin/go ]; then  \
